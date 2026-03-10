@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Operation: Find Maddie's Reply</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Nunito', Arial, sans-serif;
+  text-align: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #1a0a14, #0d1a2e, #1a0a14);
+  background-size: 400% 400%;
+  animation: bgShift 10s ease infinite;
+  padding: 36px 16px 60px;
+  overflow-x: hidden;
+}
+
+@keyframes bgShift {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* subtle floating orbs in background */
+.orb {
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(60px);
+  pointer-events: none;
+  z-index: 0;
+  animation: orbFloat 12s ease-in-out infinite;
+}
+.orb1 { width: 220px; height: 220px; background: rgba(255,79,163,0.12); top: -60px; left: -60px; animation-delay: 0s; }
+.orb2 { width: 180px; height: 180px; background: rgba(91,196,245,0.1); bottom: -40px; right: -40px; animation-delay: 4s; }
+.orb3 { width: 140px; height: 140px; background: rgba(255,79,163,0.08); bottom: 30%; left: 10%; animation-delay: 8s; }
+
+@keyframes orbFloat {
+  0%,100% { transform: translateY(0px) scale(1); }
+  50%      { transform: translateY(-20px) scale(1.05); }
+}
+
+.card {
+  position: relative;
+  z-index: 1;
+  background: rgba(18, 6, 18, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  max-width: 390px;
+  margin: auto;
+  padding: 28px 22px 22px;
+  border-radius: 26px;
+  box-shadow: 0 0 60px rgba(255, 80, 160, 0.18), 0 20px 50px rgba(0,0,0,0.6);
+  border: 1.5px solid rgba(255, 100, 170, 0.25);
+  animation: cardIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(30px) scale(0.95); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* glowing top border line */
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 10%; right: 10%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,100,170,0.6), rgba(91,196,245,0.4), transparent);
+  border-radius: 99px;
+}
+
+h2 {
+  font-size: 1.45rem;
+  font-weight: 900;
+  background: linear-gradient(90deg, #ff4fa3, #ff90cc, #5bc4f5);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 10px;
+  letter-spacing: -0.2px;
+}
+
+.intro {
+  font-size: 0.87rem;
+  color: rgba(255, 200, 225, 0.65);
+  line-height: 1.65;
+  margin-bottom: 16px;
+}
+
+.intro b {
+  color: #ff79b0;
+  -webkit-text-fill-color: #ff79b0;
+  font-weight: 700;
+}
+
+.divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,100,170,0.18), transparent);
+  margin: 14px 0;
+}
+
+.section-label {
+  font-size: 0.67rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2.5px;
+  color: rgba(255, 120, 180, 0.38);
+  margin-bottom: 10px;
+}
+
+.btn-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+button {
+  font-family: 'Nunito', Arial, sans-serif;
+  padding: 13px 8px;
+  font-size: 0.83rem;
+  font-weight: 700;
+  border: none;
+  border-radius: 14px;
+  cursor: pointer;
+  color: white;
+  transition: transform 0.15s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.15s ease, filter 0.15s ease;
+  line-height: 1.35;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
+button:hover {
+  transform: translateY(-3px) scale(1.03);
+  filter: brightness(1.12);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+}
+
+button:active {
+  transform: scale(0.95) !important;
+  filter: brightness(0.95) !important;
+  transition: transform 0.08s ease, filter 0.08s ease;
+}
+
+.btn-sing     { background: linear-gradient(135deg, #ff4fa3, #c4006e); box-shadow: 0 4px 15px rgba(255,79,163,0.25); }
+.btn-study    { background: linear-gradient(135deg, #3a9ad9, #1a5fa0); box-shadow: 0 4px 15px rgba(58,154,217,0.25); }
+.btn-icecream { background: linear-gradient(135deg, #ff79b0, #e8318a); box-shadow: 0 4px 15px rgba(232,49,138,0.25); }
+.btn-anime    { background: linear-gradient(135deg, #2a6090, #0d3558); border: 1px solid rgba(90,170,230,0.25); box-shadow: 0 4px 15px rgba(13,53,88,0.4); }
+.btn-ignore   { background: linear-gradient(135deg, #1e0e22, #0d0d0d); border: 1px solid rgba(255,100,170,0.2); }
+.btn-random   { background: linear-gradient(135deg, #ff4fa3, #3a7abf); box-shadow: 0 4px 15px rgba(255,79,163,0.2); }
+
+.btn-full { grid-column: 1 / -1; padding: 13px; font-size: 0.88rem; }
+
+.btn-sub {
+  font-size: 0.71rem;
+  font-weight: 400;
+  opacity: 0.75;
+}
+
+/* result box */
+#result {
+  margin-top: 16px;
+  min-height: 68px;
+  font-size: 0.89rem;
+  line-height: 1.7;
+  color: rgba(255, 220, 238, 0.88);
+  background: rgba(255, 60, 150, 0.06);
+  border: 1.5px solid rgba(255, 100, 170, 0.15);
+  border-radius: 16px;
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  transition: border-color 0.4s ease, background 0.4s ease, opacity 0.25s ease, transform 0.25s ease;
+}
+
+#result.hide {
+  opacity: 0;
+  transform: translateY(4px);
+}
+
+#result.show {
+  opacity: 1;
+  transform: translateY(0);
+  border-color: rgba(255, 100, 170, 0.35);
+  background: rgba(255, 60, 150, 0.1);
+}
+
+/* patience meter */
+.meter-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.meter-label {
+  font-size: 0.7rem;
+  color: rgba(255,120,180,0.5);
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.meter-bar {
+  flex: 1;
+  height: 4px;
+  background: rgba(255,100,170,0.1);
+  border-radius: 99px;
+  overflow: hidden;
+}
+
+.meter-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #ff4fa3, #5bc4f5);
+  border-radius: 99px;
+  transition: width 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.meter-pct {
+  font-size: 0.7rem;
+  color: rgba(255,120,180,0.5);
+  font-weight: 700;
+  min-width: 30px;
+  text-align: right;
+}
+
+/* when meter hits 100% */
+.meter-fill.full {
+  background: linear-gradient(90deg, #ff4fa3, #ff90cc, #5bc4f5);
+  animation: shimmer 1.5s ease infinite;
+}
+
+@keyframes shimmer {
+  0%,100% { filter: brightness(1); }
+  50%      { filter: brightness(1.3); }
+}
+
+/* particles */
+.particle {
+  position: fixed;
+  pointer-events: none;
+  z-index: 999;
+  animation: floatUp 1.6s ease-out forwards;
+  font-size: 1.1rem;
+  will-change: transform, opacity;
+}
+
+@keyframes floatUp {
+  0%   { opacity: 1; transform: translateY(0) scale(1) rotate(0deg); }
+  100% { opacity: 0; transform: translateY(-140px) scale(0.4) rotate(30deg); }
+}
+
+.confp {
+  position: fixed;
+  pointer-events: none;
+  z-index: 999;
+  width: 6px;
+  height: 6px;
+  border-radius: 2px;
+  animation: confDrop 1.5s ease-out forwards;
+  will-change: transform, opacity;
+}
+
+@keyframes confDrop {
+  0%   { opacity: 1; transform: translateY(0) rotate(0deg) scaleX(1); }
+  50%  { transform: translateY(120px) rotate(280deg) scaleX(0.5); }
+  100% { opacity: 0; transform: translateY(240px) rotate(520deg) scaleX(1); }
+}
+
+</style>
+</head>
+<body>
+
+<div class="orb orb1"></div>
+<div class="orb orb2"></div>
+<div class="orb orb3"></div>
+
+<div class="card">
+
+  <h2>🍦 Operation: Reply Maddie</h2>
+
+  <p class="intro">
+    <b>Bottt</b> sent a Good Morning message 🤖<br>
+    But <b>Sweet Scoop Maddie</b> hasn't replied yet...<br>
+    pick a reason to investigate ⬇️
+  </p>
+
+  <div class="divider"></div>
+  <div class="section-label">possible reasons</div>
+
+  <div class="btn-grid">
+    <button class="btn-sing"     onclick="reply(1)">🎤 Singing again<span class="btn-sub">breathing is optional</span></button>
+    <button class="btn-study"    onclick="reply(2)">📚 NEET mode<span class="btn-sub">future doctor arc</span></button>
+    <button class="btn-icecream" onclick="reply(3)">🍦 Ice cream crisis<span class="btn-sub">choc vs strawberry</span></button>
+    <button class="btn-anime"    onclick="reply(4)">📺 Anime hole<span class="btn-sub">"just one episode"</span></button>
+    <button class="btn-ignore btn-full" onclick="reply(5)">🙄 ignoring me on purpose</button>
+    <button class="btn-random btn-full" onclick="randomExcuse()">🎲 Generate Maddie Excuse™</button>
+  </div>
+
+  <div id="result">
+    <span style="color:rgba(255,180,210,0.25);font-size:0.82rem">awaiting diagnosis... 🔍</span>
+  </div>
+
+  <div class="meter-row">
+    <span class="meter-label">my patience</span>
+    <div class="meter-bar"><div class="meter-fill" id="meter"></div></div>
+    <span class="meter-pct" id="meter-pct">0%</span>
+  </div>
+
+</div>
+
+<script>
+
+let patience = 0;
+let resultVisible = false;
+
+function boom(btnEl) {
+  const emojis = ['💖','✨','🌸','💕','⭐','🎀','💫','🍦'];
+  const colors  = ['#ff4fa3','#5bc4f5','#ff90cc','#ffffff','#3a9ad9'];
+
+  // burst from button position
+  const rect = btnEl ? btnEl.getBoundingClientRect() : null;
+  const cx = rect ? rect.left + rect.width / 2 : window.innerWidth / 2;
+  const cy = rect ? rect.top + rect.height / 2  : window.innerHeight * 0.5;
+
+  for (let i = 0; i < 7; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    p.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+    const angle = (Math.random() - 0.5) * 160;
+    p.style.cssText = `left:${cx + angle}px; top:${cy}px; animation-delay:${i * 0.06}s`;
+    document.body.appendChild(p);
+    setTimeout(() => p.remove(), 1800);
+  }
+
+  for (let i = 0; i < 12; i++) {
+    const c = document.createElement('div');
+    c.className = 'confp';
+    c.style.cssText = `
+      left:${10 + Math.random() * 80}vw;
+      top:-8px;
+      background:${colors[Math.floor(Math.random() * colors.length)]};
+      animation-delay:${Math.random() * 0.45}s
+    `;
+    document.body.appendChild(c);
+    setTimeout(() => c.remove(), 2000);
+  }
+}
+
+function setResult(html, btn) {
+  const el = document.getElementById('result');
+
+  // smooth fade out → swap → fade in
+  el.classList.remove('show');
+  el.classList.add('hide');
+
+  setTimeout(() => {
+    el.innerHTML = html;
+    el.classList.remove('hide');
+    el.classList.add('show');
+  }, 220);
+
+  boom(btn);
+}
+
+function updateMeter() {
+  patience = Math.min(patience + 18, 100);
+  const fill = document.getElementById('meter');
+  fill.style.width = patience + '%';
+  document.getElementById('meter-pct').textContent = patience + '%';
+  if (patience >= 100) fill.classList.add('full');
+}
+
+function reply(x, btn) {
+  updateMeter();
+
+  const msgs = {
+    1: "you're out there singing to the whole world but couldn't reply to my gm?? one message maddie. one. 😭🎤",
+    2: "okay future doctor and everything but even doctors reply to good morning texts?? the stethoscope can wait 🩺😭",
+    3: "so you chose ice cream over replying to me?? okay. okay fine. just know i'm slightly offended 😒🍫",
+    4: "you gave that anime guy more attention than me today and i think about that 💔 let me know when the episode ends yeah? 😌",
+    5: "nah ignoring me on purpose isn't real. it's not possible. i refuse to accept this diagnosis 🚫🤖",
+  };
+
+  setResult(msgs[x], btn);
+}
+
+function randomExcuse(btn) {
+  updateMeter();
+
+  const excuses = [
+    "you started singing one song and accidentally wrote 3 new covers didn't you 🎤",
+    "stuck choosing between chocolate, strawberry AND vanilla and forgot i existed 🍦",
+    "opened anime 'for 5 mins' — it's been 3 hours. i counted. 📺",
+    "singing in 7 languages and lost track of time completely huh 🌍",
+    "villain arc activated. replies on hold. i see how it is 🖤",
+    "you've gone full ghost mode. not even a seen. not even a typing bubble. nothing. this is so dramatic and i'm not okay 💀",
+    "making a lowkey song cover and it's going well but what about my gm tho ✨",
+  ];
+
+  const pick = excuses[Math.floor(Math.random() * excuses.length)];
+  setResult("maddie excuse generator™ says:<br><br>" + pick, btn);
+}
+
+// pass button reference for burst origin
+document.querySelectorAll('button').forEach(btn => {
+  btn.addEventListener('click', function() {
+    const fn = this.getAttribute('onclick');
+    // already handled via onclick, just ensure boom gets btn ref
+  });
+});
+
+// override onclick to pass button element
+document.querySelectorAll('[onclick]').forEach(btn => {
+  const original = btn.getAttribute('onclick');
+  btn.removeAttribute('onclick');
+  btn.addEventListener('click', function(e) {
+    const match = original.match(/(\w+)\((\d*)\)/);
+    if (!match) return;
+    const fnName = match[1];
+    const arg    = match[2];
+    if (fnName === 'reply')         reply(parseInt(arg), this);
+    else if (fnName === 'randomExcuse') randomExcuse(this);
+  });
+});
+
+</script>
+</body>
+</html>
